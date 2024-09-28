@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 
 async function getUser(clientId, accessToken) {
   let userResponse = await fetch(`https://api.twitch.tv/helix/users`, {

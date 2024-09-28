@@ -36,7 +36,9 @@ app.use(
   }),
 );
 
-app.get("/", (req, res) => res.send("Twitch Unban Requests EventSub Webhook Endpoint"));
+app.get("/", (req, res) =>
+  res.send("Twitch Unban Requests EventSub Webhook Endpoint"),
+);
 
 app.post("/", async (req, res) => {
   let secret = process.env.EVENTSUB_SECRET;
