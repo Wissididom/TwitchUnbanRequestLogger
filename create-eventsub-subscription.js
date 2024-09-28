@@ -35,11 +35,6 @@ async function registerUnbanRequestEvent(broadcasterId, moderatorId) {
     },
   };
   console.log(`registerUnbanRequestEvent:\n${JSON.stringify(data)}`);
-  console.log({
-    Authorization: `Bearer ${token.access_token}`,
-    "Client-ID": process.env.TWITCH_CLIENT_ID,
-    "Content-Type": "application/json",
-  });
   return await fetch("https://api.twitch.tv/helix/eventsub/subscriptions", {
     method: "POST",
     headers: {

@@ -36,7 +36,7 @@ app.use(
   }),
 );
 
-app.get("/", (req, res) => res.send("Twitch EventSub Webhook Endpoint"));
+app.get("/", (req, res) => res.send("Twitch Unban Requests EventSub Webhook Endpoint"));
 
 app.post("/", async (req, res) => {
   let secret = process.env.EVENTSUB_SECRET;
@@ -59,7 +59,7 @@ app.post("/", async (req, res) => {
               {
                 color: 15548997, // red
                 title: notification.event.id
-                  ? `Unban Request #${notification.event.id}`
+                  ? `Unban Request ${notification.event.id}`
                   : "Unban Request",
                 fields: [
                   {

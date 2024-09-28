@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 async function getUser(clientId, accessToken) {
   let userResponse = await fetch(`https://api.twitch.tv/helix/users`, {
     headers: {
@@ -8,17 +10,7 @@ async function getUser(clientId, accessToken) {
   return userResponse.data[0];
 }
 
-export async function getAccountAccess(manage) {
-  let scope;
-  if (manage) {
-    scope = "moderator:manage:unban_requests";
-  } else {
-    scope = "moderator:read:unban_requests";
-  }
-  return await getAccountAccess(encodeURIComponent([scope].join(" ")));
-}
-
-async function getAccountAccess(forWhom, manage) {
+async function getAccountAccess(manage) {
   let scopes;
   if (manage) {
     scopes = encodeURIComponent(["moderator:manage:unban_requests"].join(" "));
@@ -72,3 +64,5 @@ async function getAccountAccess(forWhom, manage) {
     }
   }, 1000);
 }
+
+await getAccountAccess(false);
