@@ -85,18 +85,18 @@ app.post("/", async (req, res) => {
             ],
           };
           console.log(JSON.stringify(discordPayload, null, 4));
-          let discordResponse = await fetch(
-            `${process.env.DISCORD_WEBHOOK_URL}?wait=true`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(discordPayload),
+          let webhookUrl = `${process.env.DISCORD_WEBHOOK_URL}?wait=true`;
+          if (process.env.THREAD_ID && process.env.THREAD_ID != "") {
+            webhookUrl += `&thread_id=${process.env.THREAD_ID}`;
+          }
+          let discordResponse = await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
             },
-          ).then((res) => res.text());
+            body: JSON.stringify(discordPayload),
+          }).then((res) => res.text());
           console.log(JSON.stringify(discordResponse, null, 4));
-          // TODO
         } else {
           console.log(`Event type: ${notification.subscription.type}`);
           console.log(JSON.stringify(notification.event, null, 4));
