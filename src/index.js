@@ -66,12 +66,12 @@ app.post("/", async (req, res) => {
                 fields: [
                   {
                     name: "Broadcaster",
-                    value: `\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)`,
+                    value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
                     inline: false,
                   },
                   {
                     name: "User",
-                    value: `\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)`,
+                    value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
                     inline: false,
                   },
                   {
