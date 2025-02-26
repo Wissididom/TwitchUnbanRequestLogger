@@ -97,6 +97,54 @@ app.post("/", async (req, res) => {
             body: JSON.stringify(discordPayload),
           }).then((res) => res.text());
           console.log(JSON.stringify(discordResponse, null, 4));
+        } else if (
+          notification.subscription.type == "channel.unban_request.resolve"
+        ) {
+          if (!notification.event.status) {
+            res.sendStatus(204);
+            break;
+          }
+          let discordPayload = {
+            embeds: [
+              {
+                color: 15548997, // red
+                title: notification.event.id
+                  ? `Unban Request ${notification.event.id} ${notification.event.status}`
+                  : `Unban Request ${notification.event.status}`,
+                fields: [
+                  {
+                    name: "Broadcaster",
+                    value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
+                    inline: false,
+                  },
+                  {
+                    name: "Moderator",
+                    value: `[\`${notification.event.moderator_user_name}\` (\`${notification.event.moderator_user_login}\` - \`${notification.event.moderator_user_id}\`)](<https://www.twitch.tv/${notification.event.moderator_user_login}>)`,
+                    inline: false,
+                  },
+                  {
+                    name: "User",
+                    value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
+                    inline: false,
+                  },
+                ],
+                description: `**Status: \`${notification.event.status}\`**\n**Resolution Text:**\n\`\`\`${notification.event.resolution_text}\`\`\``,
+              },
+            ],
+          };
+          console.log(JSON.stringify(discordPayload, null, 4));
+          let webhookUrl = `${process.env.DISCORD_WEBHOOK_URL}?wait=true`;
+          if (process.env.THREAD_ID && process.env.THREAD_ID != "") {
+            webhookUrl += `&thread_id=${process.env.THREAD_ID}`;
+          }
+          let discordResponse = await fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(discordPayload),
+          }).then((res) => res.text());
+          console.log(JSON.stringify(discordResponse, null, 4));
         } else {
           console.log(`Event type: ${notification.subscription.type}`);
           console.log(JSON.stringify(notification.event, null, 4));

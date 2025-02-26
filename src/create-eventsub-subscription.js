@@ -20,10 +20,10 @@ let token = {
   token_type: null,
 };
 
-async function registerUnbanRequestEvent(broadcasterId, moderatorId) {
+async function makeRegisterRequest(type, version, broadcasterId, moderatorId) {
   let data = {
-    type: "channel.unban_request.create",
-    version: "1",
+    type,
+    version,
     condition: {
       broadcaster_user_id: broadcasterId,
       moderator_user_id: moderatorId,
@@ -34,7 +34,7 @@ async function registerUnbanRequestEvent(broadcasterId, moderatorId) {
       secret: process.env.EVENTSUB_SECRET,
     },
   };
-  console.log(`registerUnbanRequestEvent:\n${JSON.stringify(data)}`);
+  console.log(`registerUnbanRequestCreateEvent:\n${JSON.stringify(data)}`);
   return await fetch("https://api.twitch.tv/helix/eventsub/subscriptions", {
     method: "POST",
     headers: {
@@ -57,6 +57,24 @@ async function registerUnbanRequestEvent(broadcasterId, moderatorId) {
       return false;
     }
   });
+}
+
+async function registerUnbanRequestCreateEvent(broadcasterId, moderatorId) {
+  return makeRegisterRequest(
+    "channel.unban_request.create",
+    "1",
+    broadcasterId,
+    moderatorId,
+  );
+}
+
+async function registerUnbanRequestResolveEvent(broadcasterId, moderatorId) {
+  return makeRegisterRequest(
+    "channel.unban_request.resolve",
+    "1",
+    broadcasterId,
+    moderatorId,
+  );
 }
 
 async function getToken() {
@@ -84,17 +102,42 @@ const readlineInterface = readline.createInterface({
 readlineInterface.question(
   "Enter the User whose Channel you want to monitor:\n",
   async (user) => {
-    await getToken();
-    await registerUnbanRequestEvent(
-      (
-        await getUser(
-          process.env.TWITCH_CLIENT_ID,
-          token.access_token,
-          user.toLowerCase(),
-        )
-      ).id,
-      process.env.MODERATOR_ID,
+    readlineInterface.question(
+      "Which event do you want to subscribe (create, resolve):\n",
+      async (subType) => {
+        switch (subType.trim().toLowerCase()) {
+          case "create":
+            await getToken();
+            await registerUnbanRequestCreateEvent(
+              (
+                await getUser(
+                  process.env.TWITCH_CLIENT_ID,
+                  token.access_token,
+                  user.toLowerCase(),
+                )
+              ).id,
+              process.env.MODERATOR_ID,
+            );
+            break;
+          case "resolve":
+            await getToken();
+            await registerUnbanRequestResolveEvent(
+              (
+                await getUser(
+                  process.env.TWITCH_CLIENT_ID,
+                  token.access_token,
+                  user.toLowerCase(),
+                )
+              ).id,
+              process.env.MODERATOR_ID,
+            );
+            break;
+          default:
+            console.log('Please only use "create" or "resolve" for the event!');
+            break;
+        }
+        readlineInterface.close();
+      },
     );
-    readlineInterface.close();
   },
 );
