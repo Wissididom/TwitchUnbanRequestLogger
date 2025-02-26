@@ -127,13 +127,8 @@ app.post("/", async (req, res) => {
                     value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
                     inline: false,
                   },
-                  {
-                    name: "Created at",
-                    value: `<t:${Math.floor(Date.parse(notification.event.created_at) / 1000)}:F>`,
-                    inline: false,
-                  },
                 ],
-                description: `Status: \`${notification.event.status}\`\nResolution Text:\n\`\`\`${notification.event.resolution_text}\`\`\``,
+                description: `**Status: \`${notification.event.status}\`**\n**Resolution Text:**\n\`\`\`${notification.event.resolution_text}\`\`\``,
               },
             ],
           };
