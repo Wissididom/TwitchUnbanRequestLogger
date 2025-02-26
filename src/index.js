@@ -59,7 +59,7 @@ app.post("/", async (req, res) => {
           let discordPayload = {
             embeds: [
               {
-                color: 15548997, // red
+                color: 0xcc3333, // red
                 title: notification.event.id
                   ? `Unban Request ${notification.event.id}`
                   : "Unban Request",
@@ -107,7 +107,7 @@ app.post("/", async (req, res) => {
           let discordPayload = {
             embeds: [
               {
-                color: 15548997, // red
+                color: 0xaaff00, // green
                 title: notification.event.id
                   ? `Unban Request ${notification.event.id} ${notification.event.status}`
                   : `Unban Request ${notification.event.status}`,
