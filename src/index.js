@@ -104,10 +104,23 @@ app.post("/", async (req, res) => {
             res.sendStatus(204);
             break;
           }
+          let color = null;
+          switch (notification.event.status) {
+            case "approved":
+              color = 0xaaff00; // green
+              break;
+            case "denied":
+              color = 0xcc3333; // red
+              break;
+            case "canceled":
+            default:
+              color = 0x808080; // gray
+              break;
+          }
           let discordPayload = {
             embeds: [
               {
-                color: 0xaaff00, // green
+                color,
                 title: notification.event.id
                   ? `Unban Request ${notification.event.id} ${notification.event.status}`
                   : `Unban Request ${notification.event.status}`,
