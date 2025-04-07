@@ -4,7 +4,7 @@ import crypto from "crypto";
 import express from "express";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
-import { authCallback, auth } from "./auth.js";
+import { auth, authCallback } from "./auth.js";
 
 const app = express();
 

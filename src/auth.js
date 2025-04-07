@@ -44,7 +44,7 @@ export async function authCallback(req, res) {
         client_secret: process.env.TWITCH_CLIENT_SECRET,
         code: authCode,
         grant_type: "authorization_code",
-        redirect_uri: process.env.TWTICH_REDIRECT_URI,
+        redirect_uri: process.env.TWITCH_REDIRECT_URI,
       }),
     });
     if (fetchResponse.ok) {
