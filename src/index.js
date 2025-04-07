@@ -1,7 +1,10 @@
 import "dotenv/config";
+import { getUser as getUserImpl } from "./utils.js";
 import crypto from "crypto";
 import express from "express";
+import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
+import { authCallback, auth } from "./auth.js";
 
 const app = express();
 
@@ -28,6 +31,8 @@ let token = {
   user: null,
 };
 
+const limiter = rateLimit();
+
 app.use(helmet());
 
 app.use(
@@ -36,9 +41,20 @@ app.use(
   }),
 );
 
-app.get("/", (req, res) =>
-  res.send("Twitch Unban Requests EventSub Webhook Endpoint"),
-);
+app.get("/", (req, res) => {
+  res.send("Twitch Unban Requests EventSub Webhook Endpoint");
+});
+
+app.get("/auth", (req, res) => {
+  auth(
+    res,
+    process.env.TWITCH_CLIENT_ID,
+    process.env.TWITCH_REDIRECT_URI,
+    false,
+  );
+});
+
+app.get("/auth-callback", authCallback);
 
 app.post("/", async (req, res) => {
   let secret = process.env.EVENTSUB_SECRET;
