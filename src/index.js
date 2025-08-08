@@ -77,8 +77,8 @@ app.post("/", async (req, res) => {
               {
                 color: 0xcc3333, // red
                 title: notification.event.id
-                  ? `Unban Request ${notification.event.id}`
-                  : "Unban Request",
+                  ? `New Unban Request (${notification.event.id}) created`
+                  : "New Unban Request created",
                 fields: [
                   {
                     name: "Broadcaster",
