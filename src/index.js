@@ -72,6 +72,27 @@ app.post("/", async (req, res) => {
     switch (req.headers[MESSAGE_TYPE]) {
       case MESSAGE_TYPE_NOTIFICATION:
         if (notification.subscription.type == "channel.unban_request.create") {
+          let fields = [];
+          if (
+            process.env.HIDE_BROADCASTER != "true" &&
+            process.env.HIDE_BROADCASTER != "1"
+          ) {
+            fields.push({
+              name: "Broadcaster",
+              value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
+              inline: false,
+            });
+          }
+          fields.push({
+            name: "User",
+            value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
+            inline: false,
+          });
+          fields.push({
+            name: "Created at",
+            value: `<t:${Math.floor(Date.parse(notification.event.created_at) / 1000)}:F>`,
+            inline: false,
+          });
           let discordPayload = {
             embeds: [
               {
@@ -79,23 +100,7 @@ app.post("/", async (req, res) => {
                 title: notification.event.id
                   ? `New Unban Request (${notification.event.id}) created`
                   : "New Unban Request created",
-                fields: [
-                  {
-                    name: "Broadcaster",
-                    value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
-                    inline: false,
-                  },
-                  {
-                    name: "User",
-                    value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
-                    inline: false,
-                  },
-                  {
-                    name: "Created at",
-                    value: `<t:${Math.floor(Date.parse(notification.event.created_at) / 1000)}:F>`,
-                    inline: false,
-                  },
-                ],
+                fields,
                 description: `\`\`\`${notification.event.text}\`\`\``,
               },
             ],
@@ -133,6 +138,27 @@ app.post("/", async (req, res) => {
               color = 0x808080; // gray
               break;
           }
+          let fields = [];
+          if (
+            process.env.HIDE_BROADCASTER != "true" &&
+            process.env.HIDE_BROADCASTER != "1"
+          ) {
+            fields.push({
+              name: "Broadcaster",
+              value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
+              inline: false,
+            });
+          }
+          fields.push({
+            name: "Moderator",
+            value: `[\`${notification.event.moderator_user_name}\` (\`${notification.event.moderator_user_login}\` - \`${notification.event.moderator_user_id}\`)](<https://www.twitch.tv/${notification.event.moderator_user_login}>)`,
+            inline: false,
+          });
+          fields.push({
+            name: "User",
+            value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
+            inline: false,
+          });
           let discordPayload = {
             embeds: [
               {
@@ -140,23 +166,7 @@ app.post("/", async (req, res) => {
                 title: notification.event.id
                   ? `Unban Request ${notification.event.id} ${notification.event.status}`
                   : `Unban Request ${notification.event.status}`,
-                fields: [
-                  {
-                    name: "Broadcaster",
-                    value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
-                    inline: false,
-                  },
-                  {
-                    name: "Moderator",
-                    value: `[\`${notification.event.moderator_user_name}\` (\`${notification.event.moderator_user_login}\` - \`${notification.event.moderator_user_id}\`)](<https://www.twitch.tv/${notification.event.moderator_user_login}>)`,
-                    inline: false,
-                  },
-                  {
-                    name: "User",
-                    value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
-                    inline: false,
-                  },
-                ],
+                fields,
                 description: `**Status: \`${notification.event.status}\`**\n**Resolution Text:**\n\`\`\`${notification.event.resolution_text}\`\`\``,
               },
             ],
