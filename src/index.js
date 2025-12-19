@@ -79,13 +79,13 @@ app.post("/", async (req, res) => {
           ) {
             fields.push({
               name: "Broadcaster",
-              value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
+              value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>) (ID: ${notification.event.broadcaster_user_id})`,
               inline: false,
             });
           }
           fields.push({
             name: "User",
-            value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
+            value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\`)](<https://www.twitch.tv/${notification.event.user_login}>) (ID: ${notification.event.user_id}) - [Open Viewercard](<https://www.twitch.tv/popout/${notification.event.broadcaster_user_login}/viewercard/${notification.event.user_login}>)`,
             inline: false,
           });
           fields.push({
@@ -145,18 +145,18 @@ app.post("/", async (req, res) => {
           ) {
             fields.push({
               name: "Broadcaster",
-              value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\` - \`${notification.event.broadcaster_user_id}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>)`,
+              value: `[\`${notification.event.broadcaster_user_name}\` (\`${notification.event.broadcaster_user_login}\`)](<https://www.twitch.tv/${notification.event.broadcaster_user_login}>) (ID: ${notification.event.broadcaster_user_id})`,
               inline: false,
             });
           }
           fields.push({
             name: "Moderator",
-            value: `[\`${notification.event.moderator_user_name}\` (\`${notification.event.moderator_user_login}\` - \`${notification.event.moderator_user_id}\`)](<https://www.twitch.tv/${notification.event.moderator_user_login}>)`,
+            value: `[\`${notification.event.moderator_user_name}\` (\`${notification.event.moderator_user_login}\`)](<https://www.twitch.tv/${notification.event.moderator_user_login}>) (ID: ${notification.event.moderator_user_id})`,
             inline: false,
           });
           fields.push({
             name: "User",
-            value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>)`,
+            value: `[\`${notification.event.user_name}\` (\`${notification.event.user_login}\` - \`${notification.event.user_id}\`)](<https://www.twitch.tv/${notification.event.user_login}>) (ID: ${notification.event.user_id}) - [Open Viewercard](<https://www.twitch.tv/popout/${notification.event.broadcaster_user_login}/viewercard/${notification.event.user_login}>)`,
             inline: false,
           });
           let discordPayload = {
