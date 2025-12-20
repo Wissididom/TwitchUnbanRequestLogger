@@ -73,6 +73,13 @@ app.post("/", async (req, res) => {
       case MESSAGE_TYPE_NOTIFICATION:
         if (notification.subscription.type == "channel.unban_request.create") {
           let fields = [];
+          if (notification.event.id) {
+            fields.push({
+              name: "Unban Request ID",
+              value: notification.event.id,
+              inline: false,
+            });
+          }
           if (
             process.env.HIDE_BROADCASTER != "true" &&
             process.env.HIDE_BROADCASTER != "1"
@@ -97,11 +104,9 @@ app.post("/", async (req, res) => {
             embeds: [
               {
                 color: 0xcc3333, // red
-                title: notification.event.id
-                  ? `New Unban Request (${notification.event.id}) created`
-                  : "New Unban Request created",
+                title: "New Unban Request created",
                 fields,
-                description: `\`\`\`${notification.event.text}\`\`\``,
+                description: `**Request Text:**\n\`\`\`${notification.event.text}\`\`\``,
               },
             ],
           };
@@ -139,6 +144,18 @@ app.post("/", async (req, res) => {
               break;
           }
           let fields = [];
+          if (notification.event.id) {
+            fields.push({
+              name: "Unban Request ID",
+              value: notification.event.id,
+              inline: false,
+            });
+          }
+          fields.push({
+            name: "Status",
+            value: notification.event.status,
+            inline: false,
+          });
           if (
             process.env.HIDE_BROADCASTER != "true" &&
             process.env.HIDE_BROADCASTER != "1"
@@ -163,11 +180,9 @@ app.post("/", async (req, res) => {
             embeds: [
               {
                 color,
-                title: notification.event.id
-                  ? `Unban Request ${notification.event.id} ${notification.event.status}`
-                  : `Unban Request ${notification.event.status}`,
+                title: `Unban Request ${notification.event.status}`,
                 fields,
-                description: `**Status: \`${notification.event.status}\`**\n**Resolution Text:**\n\`\`\`${notification.event.resolution_text}\`\`\``,
+                description: `**Resolution Text:**\n\`\`\`${notification.event.resolution_text}\`\`\``,
               },
             ],
           };
