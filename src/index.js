@@ -106,7 +106,7 @@ app.post("/", async (req, res) => {
                 color: 0xcc3333, // red
                 title: "New Unban Request created",
                 fields,
-                description: `**Request Text:**\n\`\`\`${notification.event.text}\`\`\``,
+                description: `**Request Text:**\n\`\`\`${notification.event.text ?? "N/A"}\`\`\``,
               },
             ],
           };
@@ -182,7 +182,7 @@ app.post("/", async (req, res) => {
                 color,
                 title: `Unban Request ${notification.event.status}`,
                 fields,
-                description: `**Resolution Text:**\n\`\`\`${notification.event.resolution_text}\`\`\``,
+                description: `**Resolution Text:**\n\`\`\`${notification.event.resolution_text ?? "N/A"}\`\`\``,
               },
             ],
           };
