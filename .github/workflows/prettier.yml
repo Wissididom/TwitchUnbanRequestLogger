@@ -1,4 +1,5 @@
 name: Prettier Formatting
+
 permissions:
   contents: read
 
