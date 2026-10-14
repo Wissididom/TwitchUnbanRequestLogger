@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20
+ARG NODE_VERSION=24
 FROM node:${NODE_VERSION}-bookworm-slim
 ENV NODE_ENV=production
 WORKDIR /usr/src/app
